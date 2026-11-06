@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+import 'dartd:math' as math;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -38,17 +38,17 @@ class _DesktopScreenState extends State<DesktopScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. ТОЧНА КОПІЯ ОРИГІНАЛЬНИХ ШПАЛЕР WINDOWS 7 AERO (ВЕКТОРНИЙ ПРАПОР + ПРОМЕНІ)
+          // 1. АВТЕНТИЧНИЙ ФОН WINDOWS 7 AERO (ВЕКТОРНИЙ ПРАПОР ТА ПРОМЕНІ)
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
-                  center: Alignment(0.4, -0.2),
-                  radius: 1.4,
+                  center: Alignment(0.35, -0.15),
+                  radius: 1.35,
                   colors: [
-                    Color(0xFF2C86CD),
-                    Color(0xFF13508C),
-                    Color(0xFF061B33),
+                    Color(0xFF2C8FCB),
+                    Color(0xFF14548E),
+                    Color(0xFF071B33),
                   ],
                 ),
               ),
@@ -61,8 +61,8 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   ),
                   Center(
                     child: SizedBox(
-                      width: 240,
-                      height: 240,
+                      width: 220,
+                      height: 220,
                       child: CustomPaint(
                         painter: Win7AeroFlagPainter(),
                       ),
@@ -73,20 +73,20 @@ class _DesktopScreenState extends State<DesktopScreen> {
             ),
           ),
 
-          // 2. ІКОНКИ РОБОЧОГО СТОЛУ WINDOWS 7
+          // 2. ІКОНКИ РОБОЧОГО СТОЛУ
           Positioned(
-            top: 25,
+            top: 30,
             left: 15,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildWin7DesktopIcon(
+                _buildDesktopIcon(
                   label: 'Комп\'ютер',
                   icon: Icons.computer,
                   onTap: () => setState(() => isMyComputerOpen = true),
                 ),
                 const SizedBox(height: 20),
-                _buildWin7DesktopIcon(
+                _buildDesktopIcon(
                   label: 'Кошик',
                   icon: Icons.delete_outline,
                   onTap: () {},
@@ -95,23 +95,22 @@ class _DesktopScreenState extends State<DesktopScreen> {
             ),
           ),
 
-          // 3. ВІКНО "КОМП'ЮТЕР" (AERO GLASS INTERFACE)
+          // 3. ВІКНО "КОМП'ЮТЕР"
           if (isMyComputerOpen)
             Positioned(
               top: 50,
-              left: 15,
-              right: 15,
+              left: 20,
+              right: 20,
               child: Container(
                 height: 380,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF0F0F0),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF5B9BD5), width: 2),
+                  border: Border.all(color: const Color(0xFF4B85C5), width: 2),
                   boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20)],
                 ),
                 child: Column(
                   children: [
-                    // Заголовок вікна
                     Container(
                       height: 32,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -125,7 +124,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         children: [
                           const Icon(Icons.computer, size: 16, color: Color(0xFF143254)),
                           const SizedBox(width: 8),
-                          const Text('Комп\'ютер', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF0F2537))),
+                          const Text('Комп\'ютер', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                           const Spacer(),
                           GestureDetector(
                             onTap: () => setState(() => isMyComputerOpen = false),
@@ -142,7 +141,6 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         ],
                       ),
                     ),
-                    // Диски C: та D:
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -160,14 +158,14 @@ class _DesktopScreenState extends State<DesktopScreen> {
               ),
             ),
 
-          // 4. ОРИГІНАЛЬНЕ МЕНЮ "ПУСК" AERO GLASS
+          // 4. МЕНЮ "ПУСК" WINDOWS 7
           if (isStartOpen)
             Positioned(
               left: 0,
               bottom: 40,
               child: Container(
                 width: 360,
-                height: 450,
+                height: 440,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(topRight: Radius.circular(8)),
                   border: Border.all(color: const Color(0xFF7CB6E8), width: 1.5),
@@ -200,7 +198,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                                 child: ListView(
                                   padding: const EdgeInsets.symmetric(vertical: 2),
                                   children: [
-                                    _buildStartAppItem(Icons.public, 'Internet Explorer', Colors.lightBlue),
+                                    _buildStartAppItem(Icons.language, 'Internet Explorer', Colors.lightBlue),
                                     _buildStartAppItem(Icons.play_circle_filled, 'Windows Media Center', Colors.green),
                                     _buildStartAppItem(Icons.calculate, 'Калькулятор', Colors.blueGrey),
                                     _buildStartAppItem(Icons.sticky_note_2, 'Записки', Colors.amber),
@@ -271,7 +269,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
               ),
             ),
 
-          // 5. ПАНЕЛЬ ЗАВДАНЬ (AERO TASKBAR)
+          // 5. ПАНЕЛЬ ЗАВДАНЬ AERO TASKBAR
           Positioned(
             left: 0,
             right: 0,
@@ -292,7 +290,6 @@ class _DesktopScreenState extends State<DesktopScreen> {
               ),
               child: Row(
                 children: [
-                  // Кнопка Пуск (Кругла куля Aero Orb)
                   GestureDetector(
                     onTap: () => setState(() => isStartOpen = !isStartOpen),
                     child: Container(
@@ -312,7 +309,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         child: SizedBox(
                           width: 20,
                           height: 20,
-                          child: CustomPaint(painter: Win7AeroFlagPainter()),
+                          child: CustomPaint(painter: Win7AeroFlagPainter(isSmall: true)),
                         ),
                       ),
                     ),
@@ -350,7 +347,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
     );
   }
 
-  Widget _buildWin7DesktopIcon({required String label, required IconData icon, required VoidCallback onTap}) {
+  Widget _buildDesktopIcon({required String label, required IconData icon, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -425,21 +422,23 @@ class _DesktopScreenState extends State<DesktopScreen> {
   }
 }
 
-// МАЛЮВАННЯ ХВИЛЯСТОГО ВЕКТОРНОГО ПРАПОРА WINDOWS 7
+// МАЛЮВАННЯ ХВИЛЯСТОГО ПРАПОРА WINDOWS 7
 class Win7AeroFlagPainter extends CustomPainter {
+  final bool isSmall;
+  Win7AeroFlagPainter({this.isSmall = false});
+
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
     canvas.save();
-    canvas.rotate(-14 * math.pi / 180);
+    canvas.rotate(-12 * math.pi / 180);
 
     void drawWavyQuad(Path path, Color color) {
       canvas.drawPath(path, Paint()..color = color);
     }
 
-    // Червоний
     final pathRed = Path()
       ..moveTo(w * 0.05, h * 0.1)
       ..quadraticBezierTo(w * 0.25, h * 0.0, w * 0.45, h * 0.1)
@@ -448,7 +447,6 @@ class Win7AeroFlagPainter extends CustomPainter {
       ..close();
     drawWavyQuad(pathRed, const Color(0xFFEE4023));
 
-    // Зелений
     final pathGreen = Path()
       ..moveTo(w * 0.52, h * 0.08)
       ..quadraticBezierTo(w * 0.72, h * 0.02, w * 0.95, h * 0.12)
@@ -457,7 +455,6 @@ class Win7AeroFlagPainter extends CustomPainter {
       ..close();
     drawWavyQuad(pathGreen, const Color(0xFF7FBC00));
 
-    // Синій
     final pathBlue = Path()
       ..moveTo(w * 0.03, h * 0.52)
       ..quadraticBezierTo(w * 0.23, h * 0.42, w * 0.43, h * 0.52)
@@ -466,7 +463,6 @@ class Win7AeroFlagPainter extends CustomPainter {
       ..close();
     drawWavyQuad(pathBlue, const Color(0xFF00A3EE));
 
-    // Жовтий
     final pathYellow = Path()
       ..moveTo(w * 0.50, h * 0.50)
       ..quadraticBezierTo(w * 0.70, h * 0.44, w * 0.92, h * 0.54)
@@ -482,7 +478,7 @@ class Win7AeroFlagPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// МАЛЮВАННЯ СВІТЛОВИХ ПРОМЕНІВ AERO
+// МАЛЮВАННЯ ХВИЛЬ ТА ПРОМЕНІВ AERO
 class Win7AeroRaysPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -492,15 +488,15 @@ class Win7AeroRaysPainter extends CustomPainter {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
-          Colors.cyanAccent.withOpacity(0.22),
+          Colors.cyanAccent.withOpacity(0.18),
           Colors.lightBlue.withOpacity(0.08),
           Colors.transparent,
         ],
       ).createShader(rect);
 
     final path = Path()
-      ..moveTo(0, size.height * 0.35)
-      ..cubicTo(size.width * 0.4, size.height * 0.2, size.width * 0.6, size.height * 0.7, size.width, size.height * 0.45)
+      ..moveTo(0, size.height * 0.3)
+      ..cubicTo(size.width * 0.4, size.height * 0.2, size.width * 0.6, size.height * 0.7, size.width, size.height * 0.5)
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
       ..close();
