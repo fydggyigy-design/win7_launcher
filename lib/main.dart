@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -37,17 +38,17 @@ class _DesktopScreenState extends State<DesktopScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. ОРИГІНАЛЬНІ ШПАЛЕРИ WINDOWS 7 (Автентичний фон + Прапор)
+          // 1. ТОЧНА КОПІЯ ОРИГІНАЛЬНИХ ШПАЛЕР WINDOWS 7 AERO (ВЕКТОРНИЙ ПРАПОР + ПРОМЕНІ)
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
-                  center: Alignment(0.3, -0.2),
+                  center: Alignment(0.4, -0.2),
                   radius: 1.4,
                   colors: [
-                    Color(0xFF3393DF),
-                    Color(0xFF155FA0),
-                    Color(0xFF092949),
+                    Color(0xFF2C86CD),
+                    Color(0xFF13508C),
+                    Color(0xFF061B33),
                   ],
                 ),
               ),
@@ -55,15 +56,15 @@ class _DesktopScreenState extends State<DesktopScreen> {
                 children: [
                   Positioned.fill(
                     child: CustomPaint(
-                      painter: Win7AeroBackgroundPainter(),
+                      painter: Win7AeroRaysPainter(),
                     ),
                   ),
                   Center(
                     child: SizedBox(
-                      width: 160,
-                      height: 160,
+                      width: 240,
+                      height: 240,
                       child: CustomPaint(
-                        painter: Win7LogoPainter(),
+                        painter: Win7AeroFlagPainter(),
                       ),
                     ),
                   ),
@@ -72,128 +73,84 @@ class _DesktopScreenState extends State<DesktopScreen> {
             ),
           ),
 
-          // 2. ІКОНКИ РОБОЧОГО СТОЛУ (Класичний стиль Windows 7)
+          // 2. ІКОНКИ РОБОЧОГО СТОЛУ WINDOWS 7
           Positioned(
-            top: 20,
+            top: 25,
             left: 15,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildWin7DesktopIcon(
                   label: 'Комп\'ютер',
-                  iconType: Win7IconType.computer,
-                  onTap: () {
-                    setState(() {
-                      isMyComputerOpen = true;
-                    });
-                  },
+                  icon: Icons.computer,
+                  onTap: () => setState(() => isMyComputerOpen = true),
                 ),
                 const SizedBox(height: 20),
                 _buildWin7DesktopIcon(
                   label: 'Кошик',
-                  iconType: Win7IconType.trash,
+                  icon: Icons.delete_outline,
                   onTap: () {},
                 ),
               ],
             ),
           ),
 
-          // 3. ВІКНО "КОМП'ЮТЕР" (AERO GLASS WINDOW)
+          // 3. ВІКНО "КОМП'ЮТЕР" (AERO GLASS INTERFACE)
           if (isMyComputerOpen)
             Positioned(
               top: 50,
               left: 15,
               right: 15,
               child: Container(
-                height: 400,
+                height: 380,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF0F0F0),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: const Color(0xFF5B9BD5), width: 2),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.black54, blurRadius: 20, spreadRadius: 2)
-                  ],
+                  boxShadow: const [BoxShadow(color: Colors.black54, blurRadius: 20)],
                 ),
                 child: Column(
                   children: [
-                    // Заголовок вікна Windows 7 Aero
+                    // Заголовок вікна
                     Container(
-                      height: 34,
+                      height: 32,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(6)),
                         gradient: LinearGradient(
-                          colors: [Color(0xFFDCEBFA), Color(0xFFA8C4E3), Color(0xFF7A9EC7)],
+                          colors: [Color(0xFFE2F0FD), Color(0xFF99BFE4), Color(0xFF6B94C2)],
                         ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.computer, size: 18, color: Color(0xFF1E4267)),
+                          const Icon(Icons.computer, size: 16, color: Color(0xFF143254)),
                           const SizedBox(width: 8),
-                          const Text(
-                            'Комп\'ютер',
-                            style: TextStyle(
-                              color: Color(0xFF0F2537),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
+                          const Text('Комп\'ютер', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF0F2537))),
                           const Spacer(),
                           GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isMyComputerOpen = false;
-                              });
-                            },
+                            onTap: () => setState(() => isMyComputerOpen = false),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                               decoration: BoxDecoration(
-                                color: Colors.red.shade700,
+                                color: const Color(0xFFD9381E),
                                 borderRadius: BorderRadius.circular(3),
                                 border: Border.all(color: Colors.white70),
                               ),
-                              child: const Text(
-                                '✕',
-                                style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
-                              ),
+                              child: const Text('✕', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
                             ),
                           )
                         ],
                       ),
                     ),
-                    // Меню папки
-                    Container(
-                      height: 28,
-                      color: const Color(0xFFE5F3FF),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: const [
-                          Text('Властивості системи', style: TextStyle(fontSize: 11, color: Colors.blue)),
-                          SizedBox(width: 15),
-                          Text('Видалити або змінити програму', style: TextStyle(fontSize: 11, color: Colors.blue)),
-                        ],
-                      ),
-                    ),
-                    const Divider(height: 1),
-                    // Диски
+                    // Диски C: та D:
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
                           children: [
-                            const Text(
-                              'Пристрої з знімними носіями (2)',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF1E4267)),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                _buildDriveCard('Локальний диск (C:)', '45.2 ГБ вільних з 118 ГБ', 0.6),
-                                const SizedBox(width: 15),
-                                _buildDriveCard('Локальний диск (D:)', '210 ГБ вільних з 465 ГБ', 0.45),
-                              ],
-                            ),
+                            _buildDriveCard('Локальний диск (C:)', '45.2 ГБ вільних з 118 ГБ', 0.6),
+                            const SizedBox(width: 15),
+                            _buildDriveCard('Локальний диск (D:)', '210 ГБ вільних з 465 ГБ', 0.45),
                           ],
                         ),
                       ),
@@ -203,72 +160,62 @@ class _DesktopScreenState extends State<DesktopScreen> {
               ),
             ),
 
-          // 4. ОРИГІНАЛЬНЕ МЕНЮ "ПУСК" WINDOWS 7
+          // 4. ОРИГІНАЛЬНЕ МЕНЮ "ПУСК" AERO GLASS
           if (isStartOpen)
             Positioned(
               left: 0,
               bottom: 40,
               child: Container(
-                width: 380,
-                height: 480,
+                width: 360,
+                height: 450,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(8),
-                    topLeft: Radius.circular(8),
-                  ),
-                  border: Border.all(color: const Color(0xFF6BB2E6), width: 1.5),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.black87, blurRadius: 25, spreadRadius: 5)
-                  ],
+                  borderRadius: const BorderRadius.only(topRight: Radius.circular(8)),
+                  border: Border.all(color: const Color(0xFF7CB6E8), width: 1.5),
+                  boxShadow: const [BoxShadow(color: Colors.black87, blurRadius: 25)],
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color(0xFF336699).withOpacity(0.94),
-                      const Color(0xFF0C1B2A).withOpacity(0.97),
+                      const Color(0xFF285482).withOpacity(0.95),
+                      const Color(0xFF0A1C2E).withOpacity(0.98),
                     ],
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(6.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: Row(
                     children: [
-                      // Ліва колонка (Програми)
+                      // Ліва колонка
                       Expanded(
                         flex: 6,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(3),
                             border: Border.all(color: const Color(0xFF8BAECF)),
                           ),
                           child: Column(
                             children: [
                               Expanded(
                                 child: ListView(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
+                                  padding: const EdgeInsets.symmetric(vertical: 2),
                                   children: [
-                                    _buildStartApp(Icons.public, 'Internet Explorer', Colors.lightBlue),
-                                    _buildStartApp(Icons.play_circle_fill, 'Windows Media Center', Colors.green),
-                                    _buildStartApp(Icons.calculate, 'Калькулятор', Colors.blueGrey),
-                                    _buildStartApp(Icons.note_alt, 'Записки', Colors.amber),
-                                    _buildStartApp(Icons.content_cut, 'Ножиці', Colors.redAccent),
-                                    _buildStartApp(Icons.palette, 'Paint', Colors.purple),
-                                    _buildStartApp(Icons.games, 'Ігри', Colors.orange),
+                                    _buildStartAppItem(Icons.public, 'Internet Explorer', Colors.lightBlue),
+                                    _buildStartAppItem(Icons.play_circle_filled, 'Windows Media Center', Colors.green),
+                                    _buildStartAppItem(Icons.calculate, 'Калькулятор', Colors.blueGrey),
+                                    _buildStartAppItem(Icons.sticky_note_2, 'Записки', Colors.amber),
+                                    _buildStartAppItem(Icons.content_cut, 'Ножиці', Colors.redAccent),
+                                    _buildStartAppItem(Icons.palette, 'Paint', Colors.purple),
                                   ],
                                 ),
                               ),
                               const Divider(height: 1),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
                                 child: Row(
-                                  children: const [
-                                    Icon(Icons.arrow_right, color: Colors.black87),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      'Усі програми',
-                                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                                    ),
+                                  children: [
+                                    Icon(Icons.arrow_right, color: Colors.black),
+                                    Text('Усі програми', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               )
@@ -276,53 +223,45 @@ class _DesktopScreenState extends State<DesktopScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 6),
-                      // Права колонка (Системні папки)
+                      const SizedBox(width: 4),
+                      // Права колонка
                       Expanded(
                         flex: 4,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 8),
-                            _buildRightMenuItem('User', isBold: true),
-                            const Divider(color: Colors.white30, indent: 8, endIndent: 8),
-                            _buildRightMenuItem('Документи'),
-                            _buildRightMenuItem('Зображення'),
-                            _buildRightMenuItem('Музика'),
-                            _buildRightMenuItem('Ігри'),
-                            const Divider(color: Colors.white30, indent: 8, endIndent: 8),
-                            _buildRightMenuItem('Комп\'ютер', onTap: () {
+                            _buildRightText('User', isBold: true),
+                            const Divider(color: Colors.white30),
+                            _buildRightText('Документи'),
+                            _buildRightText('Зображення'),
+                            _buildRightText('Музика'),
+                            const Divider(color: Colors.white30),
+                            _buildRightText('Комп\'ютер', onTap: () {
                               setState(() {
                                 isMyComputerOpen = true;
                                 isStartOpen = false;
                               });
                             }),
-                            _buildRightMenuItem('Панель керування'),
-                            _buildRightMenuItem('Пристрої та принтери'),
+                            _buildRightText('Панель керування'),
                             const Spacer(),
-                            // Кнопка Завершення роботи
                             Container(
-                              height: 32,
+                              height: 30,
                               margin: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF4289C7), Color(0xFF163E66)],
-                                ),
-                                borderRadius: BorderRadius.circular(4),
+                                gradient: const LinearGradient(colors: [Color(0xFF3B82C4), Color(0xFF163E66)]),
+                                borderRadius: BorderRadius.circular(3),
                                 border: Border.all(color: Colors.white70),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
-                                  Icon(Icons.power_settings_new, color: Colors.white, size: 16),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    'Завершення роботи',
-                                    style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
-                                  ),
+                                  Icon(Icons.power_settings_new, color: Colors.white, size: 15),
+                                  SizedBox(width: 4),
+                                  Text('Завершення роботи', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
                                 ],
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -349,19 +288,13 @@ class _DesktopScreenState extends State<DesktopScreen> {
                     const Color(0xFF081625).withOpacity(0.95),
                   ],
                 ),
-                border: Border(
-                  top: BorderSide(color: Colors.white.withOpacity(0.6), width: 1),
-                ),
+                border: Border(top: BorderSide(color: Colors.white.withOpacity(0.6), width: 1)),
               ),
               child: Row(
                 children: [
-                  // Кнопка "Пуск" (Оригінальна кругла куля Aero Orb)
+                  // Кнопка Пуск (Кругла куля Aero Orb)
                   GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isStartOpen = !isStartOpen;
-                      });
-                    },
+                    onTap: () => setState(() => isStartOpen = !isStartOpen),
                     child: Container(
                       margin: const EdgeInsets.only(left: 4),
                       width: 40,
@@ -370,22 +303,16 @@ class _DesktopScreenState extends State<DesktopScreen> {
                         shape: BoxShape.circle,
                         gradient: const RadialGradient(
                           center: Alignment(-0.2, -0.3),
-                          colors: [
-                            Color(0xFF7CD4FF),
-                            Color(0xFF0058B3),
-                            Color(0xFF001B48),
-                          ],
+                          colors: [Color(0xFF7CD4FF), Color(0xFF0058B3), Color(0xFF001B48)],
                         ),
                         border: Border.all(color: Colors.white, width: 1.5),
-                        boxShadow: const [
-                          BoxShadow(color: Color(0xFF00E5FF), blurRadius: 8)
-                        ],
+                        boxShadow: const [BoxShadow(color: Color(0xFF00E5FF), blurRadius: 8)],
                       ),
                       child: Center(
                         child: SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CustomPaint(painter: Win7LogoPainter()),
+                          width: 20,
+                          height: 20,
+                          child: CustomPaint(painter: Win7AeroFlagPainter()),
                         ),
                       ),
                     ),
@@ -395,25 +322,17 @@ class _DesktopScreenState extends State<DesktopScreen> {
                   const SizedBox(width: 10),
                   const Icon(Icons.language, color: Colors.lightBlueAccent, size: 22),
                   const Spacer(),
-                  // Системний трей і годинник
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          timeString,
-                          style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          dateString,
-                          style: const TextStyle(color: Colors.white70, fontSize: 9),
-                        ),
+                        Text(timeString, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+                        Text(dateString, style: const TextStyle(color: Colors.white70, fontSize: 9)),
                       ],
                     ),
                   ),
-                  // Кнопка "Згорнути все"
                   Container(
                     width: 14,
                     height: double.infinity,
@@ -431,11 +350,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
     );
   }
 
-  Widget _buildWin7DesktopIcon({
-    required String label,
-    required Win7IconType iconType,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildWin7DesktopIcon({required String label, required IconData icon, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -444,31 +359,15 @@ class _DesktopScreenState extends State<DesktopScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.15),
+              color: Colors.blue.withOpacity(0.18),
               borderRadius: BorderRadius.circular(6),
               border: Border.all(color: Colors.white.withOpacity(0.4)),
               boxShadow: const [BoxShadow(color: Colors.black38, blurRadius: 6)],
             ),
-            child: Center(
-              child: Icon(
-                iconType == Win7IconType.computer ? Icons.computer : Icons.delete_outline,
-                color: Colors.white,
-                size: 32,
-              ),
-            ),
+            child: Icon(icon, color: Colors.white, size: 30),
           ),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-              shadows: [
-                Shadow(blurRadius: 4, color: Colors.black),
-                Shadow(blurRadius: 4, color: Colors.black),
-              ],
-            ),
-          ),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 11, shadows: [Shadow(blurRadius: 4, color: Colors.black)])),
         ],
       ),
     );
@@ -478,11 +377,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.grey.shade300)),
         child: Row(
           children: [
             const Icon(Icons.dns, size: 36, color: Colors.blueGrey),
@@ -490,6 +385,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(title, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
@@ -505,12 +401,12 @@ class _DesktopScreenState extends State<DesktopScreen> {
     );
   }
 
-  Widget _buildStartApp(IconData icon, String title, Color iconColor) {
+  Widget _buildStartAppItem(IconData icon, String title, Color color) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       child: Row(
         children: [
-          Icon(icon, color: iconColor, size: 20),
+          Icon(icon, color: color, size: 20),
           const SizedBox(width: 10),
           Text(title, style: const TextStyle(fontSize: 11, color: Colors.black87)),
         ],
@@ -518,73 +414,96 @@ class _DesktopScreenState extends State<DesktopScreen> {
     );
   }
 
-  Widget _buildRightMenuItem(String text, {bool isBold = false, VoidCallback? onTap}) {
+  Widget _buildRightText(String text, {bool isBold = false, VoidCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 11,
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-            shadows: const [Shadow(blurRadius: 2, color: Colors.black)],
-          ),
-        ),
+        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
       ),
     );
   }
 }
 
-enum Win7IconType { computer, trash }
-
-// МАЛЮВАННЯ ЛОГОТИПУ WINDOWS 7 (ЧОТИРИ КОЛЬОРОВІ ПРАПОРИ)
-class Win7LogoPainter extends CustomPainter {
+// МАЛЮВАННЯ ХВИЛЯСТОГО ВЕКТОРНОГО ПРАПОРА WINDOWS 7
+class Win7AeroFlagPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
-    final redPaint = Paint()..color = const Color(0xFFF25022);
-    final greenPaint = Paint()..color = const Color(0xFF7FBA00);
-    final bluePaint = Paint()..color = const Color(0xFF00A4EF);
-    final yellowPaint = Paint()..color = const Color(0xFFFFB900);
+    canvas.save();
+    canvas.rotate(-14 * math.pi / 180);
 
-    // Верхній лівий (Червоний)
-    canvas.drawRect(Rect.fromLTWH(0, 0, w * 0.46, h * 0.46), redPaint);
-    // Верхній правий (Зелений)
-    canvas.drawRect(Rect.fromLTWH(w * 0.54, 0, w * 0.46, h * 0.46), greenPaint);
-    // Нижній лівий (Синій)
-    canvas.drawRect(Rect.fromLTWH(0, h * 0.54, w * 0.46, h * 0.46), bluePaint);
-    // Нижній правий (Жовтий)
-    canvas.drawRect(Rect.fromLTWH(w * 0.54, h * 0.54, w * 0.46, h * 0.46), yellowPaint);
+    void drawWavyQuad(Path path, Color color) {
+      canvas.drawPath(path, Paint()..color = color);
+    }
+
+    // Червоний
+    final pathRed = Path()
+      ..moveTo(w * 0.05, h * 0.1)
+      ..quadraticBezierTo(w * 0.25, h * 0.0, w * 0.45, h * 0.1)
+      ..lineTo(w * 0.43, h * 0.45)
+      ..quadraticBezierTo(w * 0.23, h * 0.35, w * 0.03, h * 0.45)
+      ..close();
+    drawWavyQuad(pathRed, const Color(0xFFEE4023));
+
+    // Зелений
+    final pathGreen = Path()
+      ..moveTo(w * 0.52, h * 0.08)
+      ..quadraticBezierTo(w * 0.72, h * 0.02, w * 0.95, h * 0.12)
+      ..lineTo(w * 0.93, h * 0.47)
+      ..quadraticBezierTo(w * 0.70, h * 0.37, w * 0.50, h * 0.43)
+      ..close();
+    drawWavyQuad(pathGreen, const Color(0xFF7FBC00));
+
+    // Синій
+    final pathBlue = Path()
+      ..moveTo(w * 0.03, h * 0.52)
+      ..quadraticBezierTo(w * 0.23, h * 0.42, w * 0.43, h * 0.52)
+      ..lineTo(w * 0.41, h * 0.88)
+      ..quadraticBezierTo(w * 0.21, h * 0.78, w * 0.01, h * 0.88)
+      ..close();
+    drawWavyQuad(pathBlue, const Color(0xFF00A3EE));
+
+    // Жовтий
+    final pathYellow = Path()
+      ..moveTo(w * 0.50, h * 0.50)
+      ..quadraticBezierTo(w * 0.70, h * 0.44, w * 0.92, h * 0.54)
+      ..lineTo(w * 0.90, h * 0.90)
+      ..quadraticBezierTo(w * 0.68, h * 0.80, w * 0.48, h * 0.86)
+      ..close();
+    drawWavyQuad(pathYellow, const Color(0xFFFFB900));
+
+    canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// МАЛЮВАННЯ СВІТЛОВИХ ХВИЛЬ AERO GLASS
-class Win7AeroBackgroundPainter extends CustomPainter {
+// МАЛЮВАННЯ СВІТЛОВИХ ПРОМЕНІВ AERO
+class Win7AeroRaysPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final paint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.cyanAccent.withOpacity(0.22),
+          Colors.lightBlue.withOpacity(0.08),
+          Colors.transparent,
+        ],
+      ).createShader(rect);
+
     final path = Path()
-      ..moveTo(0, size.height * 0.5)
-      ..cubicTo(size.width * 0.3, size.height * 0.35, size.width * 0.7, size.height * 0.65, size.width, size.height * 0.4)
+      ..moveTo(0, size.height * 0.35)
+      ..cubicTo(size.width * 0.4, size.height * 0.2, size.width * 0.6, size.height * 0.7, size.width, size.height * 0.45)
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
       ..close();
-
-    final paint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Colors.cyanAccent.withOpacity(0.2),
-          Colors.blue.withOpacity(0.05),
-        ],
-      ).createShader(Offset.zero & size);
 
     canvas.drawPath(path, paint);
   }
